@@ -10,7 +10,14 @@ class App extends React.Component {
     owner: "Bob",
     taskList: []
   };
-
+  saveTasks = () => {
+    localStorage.setItem("tasks", JSON.stringify(this.state.taskList));
+  };
+  handleDel = item => {
+    this.setState({
+      taskList: this.state.taskList.filter(del => del !== item)
+    });
+  };
   addNewTask = newTask => {
     this.setState(currentState => {
       return { taskList: [...currentState.taskList, newTask] };
@@ -22,9 +29,18 @@ class App extends React.Component {
       <div className="App">
         <Header owner={this.state.owner} />
         <AddTask addNewTask={this.addNewTask} />
-        <ToDoList list={this.state.taskList} />
+        <ToDoList handleDel={this.handleDel} list={this.state.taskList} />
+        <button onClick={this.saveTasks}>save</button>
       </div>
     );
+  }
+
+  componentDidMount() {
+    const getTasks = localStorage.getItem("tasks");
+    if (getTasks) {
+      const parsedTasks = JSON.parse(getTasks);
+      this.setState({ taskList: parsedTasks });
+    }
   }
 }
 

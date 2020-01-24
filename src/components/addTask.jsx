@@ -2,8 +2,7 @@ import React from "react";
 
 class AddTask extends React.Component {
   state = {
-    newTask: "",
-    isChecked: false
+    newTask: ""
   };
   handleChange = event => {
     const { value } = event.target;
